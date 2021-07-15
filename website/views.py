@@ -1,5 +1,3 @@
-from flask import Flask
-app = Flask(__name__)
 from flask import Blueprint, render_template, send_from_directory, send_file
 from flask.templating import render_template_string
 from flask import request
@@ -25,12 +23,17 @@ import re
 import heapq
 from datetime import datetime, date
 import ctypes
+k32 = ctypes.windll.kernel32
+wow64 = ctypes.c_long( 0 )
+k32.Wow64DisableWow64FsRedirection( ctypes.byref(wow64) )
+# ... do stuff with real files ...
+k32.Wow64RevertWow64FsRedirection(wow64)
+views = Blueprint('views',__name__)
 from bs4 import BeautifulSoup
 import urllib.request,sys,time
 
 
-
-@app.route('/', methods =['POST','GET'])
+@views.route('/', methods =['POST','GET'])
 
 def home():
     if request.method == "POST":
